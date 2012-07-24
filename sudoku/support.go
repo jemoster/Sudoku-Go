@@ -12,13 +12,30 @@ type Game struct {
 }
 
 func (game *Game) Print() {
+    fmt.Printf("-----------\n")
     for i:=0;i<9;i++ {
         for j:=0;j<9;j++ {
             fmt.Printf("%d",game.Map[i*9+j])
+            if (j+1)%3==0 {
+                fmt.Printf("|")
+            }
         }
         fmt.Printf("\n")
+        if (i+1)%3==0 {
+            fmt.Printf("-----------\n")
+        }
     }
 }
+
+func (game *Game) GetFirstOpen() (index int) {
+    for i:=0; i<81; i++ {
+        if game.Map[i]==0 {
+            return i
+        }
+    }
+    return 80
+}
+
 
 
 //Returns true if there are no more moves to make
@@ -88,7 +105,6 @@ func (game *Game) TestColumn(col int) (valid bool) {
 func (game *Game) TestSector(sec int) (valid bool) {
     used:=0
     first:=(sec/3)*27+(sec-(sec/3)*3)*3
-    fmt.Printf("First = %d\n",first)
     for i:=0;i<3;i++ {
         for j:=0;j<3;j++ {
             test := game.Map[first+i*9+j]
